@@ -137,5 +137,11 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Ignore data
+# Ignore data and large artifacts
 data/
+*.csv
+*.sqlite
+*.sqlite3
+artifacts/
+
+

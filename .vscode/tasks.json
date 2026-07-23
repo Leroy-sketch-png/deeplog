@@ -1,0 +1,65 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "FinalizeSequenceViability",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"04b_finalize_sequence_viability.py"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "FinalizeSequenceViabilityFast",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"04b_finalize_sequence_viability.py"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "FinalizeWithLog",
+			"type": "shell",
+			"command": "python 04b_finalize_sequence_viability.py > artifacts/sequence_viability/finalize_debug.log 2>&1",
+			"isBackground": false
+		},
+		{
+			"label": "FinalizeNoSessionExamples",
+			"type": "shell",
+			"command": "python 04b_finalize_sequence_viability.py > artifacts/sequence_viability/finalize_debug.log 2>&1",
+			"isBackground": false
+		},
+		{
+			"label": "FindFinalizeProcess",
+			"type": "shell",
+			"command": "$p = Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*04b_finalize_sequence_viability.py*' }; if ($p) { $p | Select-Object ProcessId,CommandLine | Format-List | Out-String | Write-Output } else { Write-Output 'NONE' }",
+			"isBackground": false
+		},
+		{
+			"label": "KillFinalizeProcesses",
+			"type": "shell",
+			"command": "$targets = Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*04b_finalize_sequence_viability.py*' -and $_.ProcessId -ne $PID }; if ($targets) { $ids = $targets.ProcessId; Stop-Process -Id $ids -Force; Write-Output (\"KILLED=\" + ($ids -join ',')) } else { Write-Output 'KILLED=NONE' }",
+			"isBackground": false
+		},
+		{
+			"label": "KillFinalizeProcesses2",
+			"type": "shell",
+			"command": "$targets = Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*04b_finalize_sequence_viability.py*' -and $_.ProcessId -ne $PID }; if ($targets) { $ids = @($targets.ProcessId); Stop-Process -Id $ids -Force; Write-Output $ids.Count } else { Write-Output 0 }",
+			"isBackground": false
+		},
+		{
+			"label": "FindFinalizeProcessAgain",
+			"type": "shell",
+			"command": "$p = Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*04b_finalize_sequence_viability.py*' }; if ($p) { $p | Select-Object ProcessId,CommandLine | Format-Table -AutoSize | Out-String | Write-Output } else { Write-Output 'NONE' }",
+			"isBackground": false
+		},
+		{
+			"label": "FinalizeSequenceViabilityNow",
+			"type": "shell",
+			"command": "python 04b_finalize_sequence_viability.py",
+			"isBackground": false
+		}
+	]
+}
