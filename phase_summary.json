@@ -1,0 +1,36 @@
+{
+  "project_name": "DeepLog_Behavioral_Analytics",
+  "status": "COMPLETED",
+  "completion_date": "2026-07-26",
+  "data_verification": {
+    "total_events": 1151167,
+    "chronology_status": "Strictly enforced via in-memory compound tie-break sort (timestamp_epoch, rowid)",
+    "temporal_violations_remediated": true
+  },
+  "canonical_split": {
+    "logic": "70/15/15 chronological span thresholds",
+    "train_events": 792262,
+    "test_events": 182210,
+    "leakage": "Zero cross-contamination verified"
+  },
+  "modeling": {
+    "champion_baseline": "caller_conditioned_ngram_5",
+    "champion_rationale": "High explainability, deterministic component scoring, optimal alert burden framing",
+    "lstm_status": "REJECTED",
+    "lstm_rejection_rationale": "Failed to improve actionable SOC metrics over baseline; destroyed explainability and increased compute overhead"
+  },
+  "deliverables": [
+    "analyst_review_packet.md",
+    "artifacts/explainable_anomalies/top_lifecycle_anomalies.csv",
+    "artifacts/explainable_anomalies/top_actor_anomalies.csv",
+    "chronology_scoring_verification.md",
+    "final_chronology_and_hygiene_check.md",
+    "project_completion_handoff.md",
+    "phase_summary.json"
+  ],
+  "future_research_gates": [
+    "Requires genuinely new data representation (e.g., graph embeddings)",
+    "Requires new modeling unit (beyond sequence prediction)",
+    "Must provably exceed baseline floor on SOC actionable metrics (not just Top-1 accuracy)"
+  ]
+}
