@@ -1,0 +1,122 @@
+[
+  {
+    "rowid": 3,
+    "timestamp_epoch": 1783936597.402723,
+    "prev_timestamp_epoch": 1783936750.046514,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/DELETE"
+  },
+  {
+    "rowid": 8,
+    "timestamp_epoch": 1783936498.264433,
+    "prev_timestamp_epoch": 1783936728.152514,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 10,
+    "timestamp_epoch": 1783936244.757519,
+    "prev_timestamp_epoch": 1783936499.170779,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 13,
+    "timestamp_epoch": 1783936240.907442,
+    "prev_timestamp_epoch": 1783936397.188184,
+    "operation": "MICROSOFT.MACHINELEARNINGSERVICES/WORKSPACES/ONLINEENDPOINTS/LISTKEYS/ACTION"
+  },
+  {
+    "rowid": 17,
+    "timestamp_epoch": 1783936281.335325,
+    "prev_timestamp_epoch": 1783936319.840594,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 20,
+    "timestamp_epoch": 1783936262.07804,
+    "prev_timestamp_epoch": 1783936462.7005,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 24,
+    "timestamp_epoch": 1783936206.975038,
+    "prev_timestamp_epoch": 1783936280.668068,
+    "operation": "MICROSOFT.AZUREARCDATA/SQLSERVERINSTANCES/DATABASES/WRITE"
+  },
+  {
+    "rowid": 30,
+    "timestamp_epoch": 1783936511.385562,
+    "prev_timestamp_epoch": 1783936519.119906,
+    "operation": "MICROSOFT.STORAGE/STORAGEACCOUNTS/LISTKEYS/ACTION"
+  },
+  {
+    "rowid": 35,
+    "timestamp_epoch": 1783936217.957216,
+    "prev_timestamp_epoch": 1783936776.557753,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 38,
+    "timestamp_epoch": 1783936327.889171,
+    "prev_timestamp_epoch": 1783936762.393968,
+    "operation": "MICROSOFT.MACHINELEARNINGSERVICES/WORKSPACES/ONLINEENDPOINTS/LISTKEYS/ACTION"
+  },
+  {
+    "rowid": 40,
+    "timestamp_epoch": 1783936250.972505,
+    "prev_timestamp_epoch": 1783936328.232986,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/DELETE"
+  },
+  {
+    "rowid": 44,
+    "timestamp_epoch": 1783936305.956586,
+    "prev_timestamp_epoch": 1783936702.112375,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 48,
+    "timestamp_epoch": 1783936225.225592,
+    "prev_timestamp_epoch": 1783936682.148916,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 57,
+    "timestamp_epoch": 1783936515.303245,
+    "prev_timestamp_epoch": 1783936798.317577,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 59,
+    "timestamp_epoch": 1783936416.627558,
+    "prev_timestamp_epoch": 1783936515.615748,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 65,
+    "timestamp_epoch": 1783936486.66965,
+    "prev_timestamp_epoch": 1783936752.35226,
+    "operation": "MICROSOFT.COMPUTE/VIRTUALMACHINESCALESETS/WRITE"
+  },
+  {
+    "rowid": 66,
+    "timestamp_epoch": 1783936205.01657,
+    "prev_timestamp_epoch": 1783936486.66965,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 72,
+    "timestamp_epoch": 1783936386.35427,
+    "prev_timestamp_epoch": 1783936695.365568,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 80,
+    "timestamp_epoch": 1783936242.838924,
+    "prev_timestamp_epoch": 1783936798.303071,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  },
+  {
+    "rowid": 83,
+    "timestamp_epoch": 1783936256.287807,
+    "prev_timestamp_epoch": 1783936493.21258,
+    "operation": "MICROSOFT.SQL/SERVERS/DATABASES/WRITE"
+  }
+]
