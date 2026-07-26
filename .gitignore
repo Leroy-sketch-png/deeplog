@@ -145,3 +145,11 @@ data/
 artifacts/
 
 
+
+# Temporary bundle & scratch artifacts
+bundle_list.txt
+make_review_bundle_ultra.bat
+review_bundle.txt
+tree.txt
+*.tmp
+*.bak
