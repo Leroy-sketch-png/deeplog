@@ -25,7 +25,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("generate_anomalies")
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 DB_PATH = PROJECT_ROOT / "artifacts" / "_archive_phase1" / "sequence_viability" / "sequence_viability.sqlite"
 OUTPUT_DIR = PROJECT_ROOT / "artifacts" / "explainable_anomalies"
 
