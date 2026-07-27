@@ -25,23 +25,41 @@ import numpy as np
 logger = logging.getLogger("deeplog.engine")
 
 # ---------------------------------------------------------------------------
-# Required CSV column names (case-insensitive match attempted at load time)
+# Column mapping: Azure Activity Log native → internal field names
 # ---------------------------------------------------------------------------
-REQUIRED_COLUMNS = {
-    "timestamp_epoch",   # Unix epoch float/int
-    "operation",         # Azure operation type string
-    "provider",          # Resource provider
-    "caller",            # Caller identity (UPN or ObjectId)
-    "caller_ip",         # Source IP address
-    "subscription",      # Subscription ID
-    "resource_group",    # Resource group name
-    "resource_type",     # Resource type
-    "correlation_id",    # Azure correlation ID
+# The engine auto-detects two CSV schemas:
+#   1. Native Azure Activity Log export (from Log Analytics / Azure Monitor)
+#   2. Pre-processed format (with timestamp_epoch, operation, etc.)
+#
+# Native Azure columns and their internal mapping:
+AZURE_NATIVE_MAP = {
+    "timegenerated":          "timestamp_iso",
+    "operationnamevalue":     "operation",
+    "resourceprovidervalue":  "provider",
+    "caller":                 "caller",
+    "calleripaddress":        "caller_ip",
+    "subscriptionid":         "subscription",
+    "resourcegroup":          "resource_group",
+    "correlationid":          "correlation_id",
+    # ResourceId is often empty in Azure exports; resource_type derived from operation
 }
 
-OPTIONAL_COLUMNS = {
-    "timestamp": None,   # ISO8601 string, used for display only
+# Pre-processed / generic columns
+GENERIC_MAP = {
+    "timestamp_epoch":  "timestamp_epoch",
+    "operation":        "operation",
+    "provider":         "provider",
+    "caller":           "caller",
+    "caller_ip":        "caller_ip",
+    "subscription":     "subscription",
+    "resource_group":   "resource_group",
+    "resource_type":    "resource_type",
+    "correlation_id":   "correlation_id",
 }
+
+# Minimum columns required for either schema to work
+_AZURE_REQUIRED = {"timegenerated", "operationnamevalue", "caller", "correlationid"}
+_GENERIC_REQUIRED = {"timestamp_epoch", "operation", "caller", "correlation_id"}
 
 
 # ---------------------------------------------------------------------------
@@ -73,7 +91,30 @@ def _write_json(target: Path, data: Any) -> None:
 
 
 # ---------------------------------------------------------------------------
-# CSV loading with schema normalization
+# Timestamp parsing
+# ---------------------------------------------------------------------------
+
+def _parse_iso_epoch(iso_str: str) -> Optional[float]:
+    """Parse an ISO8601 timestamp string to Unix epoch seconds."""
+    if not iso_str:
+        return None
+    try:
+        s = iso_str.strip()
+        # Python's fromisoformat handles most Azure formats
+        dt = datetime.fromisoformat(s)
+        return dt.timestamp()
+    except (ValueError, TypeError):
+        return None
+
+
+def _derive_resource_type(operation: str) -> str:
+    """Derive resource_type from Azure operation name (e.g. MICROSOFT.SQL/SERVERS/DATABASES/WRITE → MICROSOFT.SQL/SERVERS/DATABASES)."""
+    parts = operation.rsplit("/", 1)
+    return parts[0] if len(parts) > 1 else operation
+
+
+# ---------------------------------------------------------------------------
+# CSV loading with auto-schema detection
 # ---------------------------------------------------------------------------
 
 def _normalize_header(raw: str) -> str:
@@ -81,7 +122,10 @@ def _normalize_header(raw: str) -> str:
 
 
 def load_events(csv_path: Path) -> List[Dict]:
-    """Load events from an Azure Activity Log CSV, normalizing column headers."""
+    """
+    Load events from a CSV file, auto-detecting whether it is a native
+    Azure Activity Log export or a pre-processed format.
+    """
     if not csv_path.exists():
         raise FileNotFoundError(
             f"Input file not found: {csv_path}\n"
@@ -93,35 +137,70 @@ def load_events(csv_path: Path) -> List[Dict]:
         if raw_reader.fieldnames is None:
             raise ValueError(f"CSV file appears empty: {csv_path}")
 
-        # Normalize all headers
-        norm_map = {_normalize_header(h): h for h in raw_reader.fieldnames}
-        missing = REQUIRED_COLUMNS - set(norm_map.keys())
-        if missing:
+        norm_headers = {_normalize_header(h) for h in raw_reader.fieldnames}
+
+        # Detect schema
+        is_azure_native = _AZURE_REQUIRED.issubset(norm_headers)
+        is_generic      = _GENERIC_REQUIRED.issubset(norm_headers)
+
+        if not is_azure_native and not is_generic:
             raise ValueError(
-                f"CSV is missing required columns: {sorted(missing)}\n"
-                f"Found: {sorted(norm_map.keys())}"
+                f"CSV schema not recognized.\n"
+                f"Found columns: {sorted(norm_headers)}\n\n"
+                f"Expected EITHER native Azure Activity Log columns:\n"
+                f"  {sorted(_AZURE_REQUIRED)}\n"
+                f"OR pre-processed columns:\n"
+                f"  {sorted(_GENERIC_REQUIRED)}"
             )
 
+        schema = "azure_native" if is_azure_native else "generic"
+        logger.info(f"Detected CSV schema: {schema}")
+
         events = []
+        skipped = 0
         for raw_row in raw_reader:
             row = {_normalize_header(k): v for k, v in raw_row.items()}
-            try:
-                epoch = float(row["timestamp_epoch"])
-            except (ValueError, TypeError):
-                continue  # skip rows with invalid timestamps
+
+            # --- Parse timestamp ---
+            if schema == "azure_native":
+                epoch = _parse_iso_epoch(row.get("timegenerated", ""))
+            else:
+                try:
+                    epoch = float(row.get("timestamp_epoch", ""))
+                except (ValueError, TypeError):
+                    epoch = _parse_iso_epoch(row.get("timestamp", ""))
+
+            if epoch is None:
+                skipped += 1
+                continue
+
+            # --- Extract fields ---
+            if schema == "azure_native":
+                op   = (row.get("operationnamevalue") or "UNKNOWN").strip().upper()
+                prov = (row.get("resourceprovidervalue") or "UNKNOWN").strip().upper()
+                ip   = (row.get("calleripaddress") or "UNKNOWN").strip()
+                sub  = (row.get("subscriptionid") or "UNKNOWN").strip()
+                rg   = (row.get("resourcegroup") or "UNKNOWN").strip()
+                corr = (row.get("correlationid") or "UNKNOWN").strip()
+                rtype = _derive_resource_type(op)
+            else:
+                op   = (row.get("operation") or "UNKNOWN").strip().upper()
+                prov = (row.get("provider") or "UNKNOWN").strip().upper()
+                ip   = (row.get("caller_ip") or row.get("calleripaddress") or "UNKNOWN").strip()
+                sub  = (row.get("subscription") or row.get("subscriptionid") or "UNKNOWN").strip()
+                rg   = (row.get("resource_group") or row.get("resourcegroup") or "UNKNOWN").strip()
+                corr = (row.get("correlation_id") or row.get("correlationid") or "UNKNOWN").strip()
+                rtype = (row.get("resource_type") or _derive_resource_type(op)).strip().upper()
+
+            caller = (row.get("caller") or "UNKNOWN").strip()
+
             events.append({
-                "t":      epoch,
-                "op":     (row.get("operation") or "UNKNOWN").strip().upper(),
-                "prov":   (row.get("provider") or "UNKNOWN").strip().upper(),
-                "caller": (row.get("caller") or "UNKNOWN").strip(),
-                "ip":     (row.get("caller_ip") or "UNKNOWN").strip(),
-                "sub":    (row.get("subscription") or "UNKNOWN").strip(),
-                "rg":     (row.get("resource_group") or "UNKNOWN").strip(),
-                "rtype":  (row.get("resource_type") or "UNKNOWN").strip().upper(),
-                "corr":   (row.get("correlation_id") or "UNKNOWN").strip(),
-                "ts_raw": row.get("timestamp", ""),
+                "t": epoch, "op": op, "prov": prov, "caller": caller,
+                "ip": ip, "sub": sub, "rg": rg, "rtype": rtype, "corr": corr,
             })
 
+    if skipped:
+        logger.warning(f"Skipped {skipped:,} rows with unparseable timestamps")
     if not events:
         raise ValueError(f"No valid events loaded from {csv_path}")
 
