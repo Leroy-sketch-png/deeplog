@@ -1,15 +1,14 @@
 # DeepLog Project Handoff Summary
 
 ## Executive Summary
-This project successfully transitioned from an experimental LSTM-based anomaly detection approach to a deterministic, heuristic-based baseline model. The system evaluates backend telemetry across two distinct axes (Track A: CorrelationId Lifecycle, Track B: Caller Session Drift) and augments raw scores with a Diagnosis Layer for direct Security Operations Center (SOC) triage.
+This project operationalizes the theoretical core of DeepLog into a production-ready anomaly detection pipeline. The detector family itself (empirical baseline vs. DeepLog-style LSTM) is fully interchangeable depending on the dataset benchmark. The **durable contribution** of this project is the operational scaffolding: dual-track detection (Track A: CorrelationId Lifecycle, Track B: Caller Session Drift), a deterministic Diagnosis Layer for direct SOC triage, and a decoupled analyst feedback lifecycle.
 
-## Definitive Findings
-*   **The Baseline Wins:** A heuristically driven baseline tracking n-gram sequences, duration, and contextual boundaries vastly outperforms opaque deep learning models for these logs. It provides exact component-level explainability without accuracy loss.
-*   **The LSTM is Unnecessary:** The LSTM was rejected because it failed to provide deterministic causal explanations, suffered from extreme training overhead, and added no measurable security value over simple empirical baselines.
+## Definitive Findings & Project Status
+The project achieves three distinct milestones, each with a different status:
 
-## Unproven Assumptions
-*   **True Security Value:** The system definitively identifies operational anomalies, but it does not yet prove these anomalies are malicious security incidents. True Positive rates remain unproven until SOC triage occurs.
-*   **Need for Automated Unlearning:** There is no evidence yet that the system requires complex automated "unlearning." 
+1.  **Operational Usefulness (PROVEN):** The system's durable contribution is its operational scaffolding. Whether powered by an LSTM or a deterministic 5-gram baseline, the raw detector simply outputs statistical anomalies. The project is operationally useful because it deterministicially parses these opaque scores into concrete, actionable causal buckets (e.g., VPN/Routing Shifts) via the Diagnosis Layer.
+2.  **Security Validity (UNPROVEN):** The system reliably identifies extreme operational anomalies and workflow deviations. However, it remains entirely unproven whether these statistical deviations correlate with true, malicious security incidents in a live production environment.
+3.  **Future Learning-Loop Readiness (PREPARED):** The infrastructure for closed-loop learning is established via the decoupled `data/feedback.sqlite` intake. However, any future implementation of automated model unlearning is currently suspended. It must only be reopened if justified by significant statistical accumulation of analyst-reviewed data.
 
 ## Track A: The Necessity of Two Review Queues
 Track A (CorrelationId Lifecycle Violations) requires two distinct analyst review queues because of **score saturation**:
@@ -21,10 +20,9 @@ Track A (CorrelationId Lifecycle Violations) requires two distinct analyst revie
 Track B (Caller Session Drift) is immediately usable for SOC triage without modification. The 30-minute caller sessions yield well-distributed, non-saturating component scores (e.g., `activity_dev`, `new_ip`, `hour_dev`). The accompanying Diagnosis Layer accurately and reliably maps these scores into discrete operational buckets (such as VPN/Routing Shifts or Off-Hours Deviations).
 
 ## The Feedback Lifecycle and Next Steps
-The project now includes a localized feedback ingestion mechanism (`data/feedback.sqlite` via the `submit-feedback` CLI). The immediate next step is for human analysts to review the `diagnosed_review_packet.md` and log ground-truth verdicts (`CONFIRMED_ANOMALY` or `BENIGN_FALSE_POSITIVE`).
-**This feedback accumulation is the mandatory prerequisite for any future automation.**
+The project now includes a localized feedback ingestion mechanism (`data/feedback.sqlite` via the `submit-feedback` CLI). **Feedback is stored strictly separately from the detector.** The immediate next step is for human analysts to review the `diagnosed_review_packet.md` and log ground-truth verdicts (`CONFIRMED_ANOMALY` or `BENIGN_FALSE_POSITIVE`).
 
-## Conditions for Reopening Model Research
-Model research (including LSTMs or online unlearning) should only be reopened if the feedback lifecycle proves that:
-1.  The deterministic heuristics produce an unmanageable false-positive rate that simple threshold tuning cannot fix.
+## Conditions for Future Unlearning or Model Research
+Model research (including dynamically unlearning via LSTMs or online baseline updates) must only be reopened if justified by actual review data from the feedback lifecycle:
+1.  The deterministic heuristics or current LSTM implementation produce an unmanageable false-positive rate that simple downstream alert-suppression rules cannot fix.
 2.  Analysts discover true-positive security events that the current feature engineering fundamentally failed to capture, but which a deep learning architecture could theoretically detect.

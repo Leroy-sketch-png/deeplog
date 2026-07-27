@@ -1,0 +1,34 @@
+{
+  "Track A | Critical Deployment/Migration Shift": {
+    "track": "A",
+    "bucket": "Critical Deployment/Migration Shift",
+    "confirmed": 5,
+    "false_positive": 15,
+    "unreviewed": 0,
+    "precision": 0.25
+  },
+  "Track A | Unknown / Mixed Deviation": {
+    "track": "A",
+    "bucket": "Unknown / Mixed Deviation",
+    "confirmed": 3,
+    "false_positive": 77,
+    "unreviewed": 0,
+    "precision": 0.037
+  },
+  "Track A | Approved cross-tenant migration.": {
+    "track": "A",
+    "bucket": "Approved cross-tenant migration.",
+    "confirmed": 0,
+    "false_positive": 1,
+    "unreviewed": 0,
+    "precision": 0.0
+  },
+  "Track B | Unknown / Mixed Deviation": {
+    "track": "B",
+    "bucket": "Unknown / Mixed Deviation",
+    "confirmed": 3,
+    "false_positive": 97,
+    "unreviewed": 0,
+    "precision": 0.03
+  }
+}
