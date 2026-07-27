@@ -1,129 +1,252 @@
 # Diagnosed Analyst Review Packet
 
-This packet contains the top 20 most critical anomalies augmented by the **Diagnosis Layer**, which maps raw component scores into deterministic operational causal categories.
+This packet contains the most critical anomalies augmented by the **Diagnosis Layer**, which maps raw component scores into deterministic operational causal categories.
 
-## Track A: CorrelationId Lifecycle Violations
+## Track A: CorrelationId Lifecycle Violations (Top 20 by Total Score)
 These alerts indicate structural workflow violations or extreme timing deviations within a single backend operation lifecycle.
 
-### 1. CorrelationId: `cb670d57-60c1-4aec-a388-c654ed5db78a`
-**Timestamp Window:** 2026-07-13T00:03:27.706992+00:00 - 2026-07-13T00:03:45.383960+00:00
+### 1. CorrelationId: `0d3a1553-26bc-4789-87a2-85b1c2591cff`
+**Timestamp Window:** 2026-07-13T00:01:24.526147+00:00 - 2026-07-13T00:01:42.463750+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 2. CorrelationId: `5aeb6fe2-2547-44c6-b5c3-b1113e2eabb3`
-**Timestamp Window:** 2026-07-13T00:03:25.517461+00:00 - 2026-07-13T00:03:41.949643+00:00
+### 2. CorrelationId: `3fa0d8ce-4dfc-4d88-a2f2-09556708e21d`
+**Timestamp Window:** 2026-07-13T00:01:23.681885+00:00 - 2026-07-13T00:01:39.694342+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 3. CorrelationId: `7b3b2ee4-489a-43fe-b01b-29af1fbaf333`
-**Timestamp Window:** 2026-07-13T00:03:23.287598+00:00 - 2026-07-13T00:03:45.372823+00:00
+### 3. CorrelationId: `a299a7fc-5cf4-4893-b9eb-bb70586e4702`
+**Timestamp Window:** 2026-07-13T00:01:22.602860+00:00 - 2026-07-13T00:01:38.947989+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 4. CorrelationId: `d6eae5b0-06c7-457c-b6b4-6d8fcdda9d23`
-**Timestamp Window:** 2026-07-13T00:03:20.511344+00:00 - 2026-07-13T00:03:37.908175+00:00
+### 4. CorrelationId: `cdaf6850-626b-4ce3-8034-68cbcffe20c9`
+**Timestamp Window:** 2026-07-13T00:01:21.478477+00:00 - 2026-07-13T00:01:38.149356+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 5. CorrelationId: `8a9a22ff-eae3-4747-9a8c-1abea916dd11`
-**Timestamp Window:** 2026-07-13T00:03:18.474567+00:00 - 2026-07-13T00:03:35.808789+00:00
+### 5. CorrelationId: `54bff83d-c127-4294-8cb7-2c981137e7c2`
+**Timestamp Window:** 2026-07-13T00:01:20.513970+00:00 - 2026-07-13T00:01:37.288053+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 6. CorrelationId: `87b59165-9632-4c98-88da-d11727f72b20`
-**Timestamp Window:** 2026-07-13T00:03:16.372823+00:00 - 2026-07-13T00:03:33.272943+00:00
+### 6. CorrelationId: `d37aaf60-8b9e-4a2f-9c90-5e6a023b4e02`
+**Timestamp Window:** 2026-07-13T00:01:19.674432+00:00 - 2026-07-13T00:01:36.015278+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 7. CorrelationId: `78ddc748-1993-4cf0-808a-e31540447295`
-**Timestamp Window:** 2026-07-13T00:03:13.395027+00:00 - 2026-07-13T00:03:30.303855+00:00
+### 7. CorrelationId: `53d3e88e-d0d0-4a16-aa9b-6f07f7cdbea5`
+**Timestamp Window:** 2026-07-13T00:01:18.674765+00:00 - 2026-07-13T00:01:35.378489+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 8. CorrelationId: `1fc88992-5839-4318-a47e-7b1d9bd2695b`
-**Timestamp Window:** 2026-07-13T00:03:10.791180+00:00 - 2026-07-13T00:03:28.021735+00:00
+### 8. CorrelationId: `e1cfda02-8420-444e-9523-c8e0bd1c736e`
+**Timestamp Window:** 2026-07-13T00:01:17.852963+00:00 - 2026-07-13T00:01:34.143027+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 9. CorrelationId: `0692716a-b028-43cb-8aa0-ac59b1500727`
-**Timestamp Window:** 2026-07-13T00:03:08.677073+00:00 - 2026-07-13T00:03:25.285135+00:00
+### 9. CorrelationId: `3e12aa47-02c2-4c08-af59-a22aa4ec6bc2`
+**Timestamp Window:** 2026-07-13T00:01:16.948021+00:00 - 2026-07-13T00:01:33.349850+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 10. CorrelationId: `94fec915-2a27-4d38-87c0-dc706b0a9830`
-**Timestamp Window:** 2026-07-13T00:03:07.369820+00:00 - 2026-07-13T00:03:22.805778+00:00
+### 10. CorrelationId: `0f935c2e-2e0e-4649-a8d6-cc97009e4613`
+**Timestamp Window:** 2026-07-13T00:01:16.054884+00:00 - 2026-07-13T00:01:32.203384+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 11. CorrelationId: `457d8148-9bf9-435e-8cd6-b553300b956e`
-**Timestamp Window:** 2026-07-13T00:03:06.372855+00:00 - 2026-07-13T00:03:22.689449+00:00
+### 11. CorrelationId: `aaa3cfa3-2be3-485d-a9e3-20a617e7ba30`
+**Timestamp Window:** 2026-07-13T00:01:15.168606+00:00 - 2026-07-13T00:01:31.588671+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 12. CorrelationId: `567a927e-d4c6-410e-9a93-64f1d0d67d1a`
-**Timestamp Window:** 2026-07-13T00:03:04.756043+00:00 - 2026-07-13T00:03:21.769941+00:00
+### 12. CorrelationId: `074d4f10-b08a-4c6f-847e-9e300b28d58b`
+**Timestamp Window:** 2026-07-13T00:01:14.116334+00:00 - 2026-07-13T00:01:30.878174+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 13. CorrelationId: `1ec97b97-0b1a-4334-92af-c19cedb39ea4`
-**Timestamp Window:** 2026-07-13T00:03:03.152636+00:00 - 2026-07-13T00:03:19.844960+00:00
+### 13. CorrelationId: `f2ece1b1-ca8a-4f2a-aebf-4417b95a47ae`
+**Timestamp Window:** 2026-07-13T00:01:13.187491+00:00 - 2026-07-13T00:01:29.640837+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 14. CorrelationId: `bc2b8d65-bffa-4075-bdde-806097e55d21`
-**Timestamp Window:** 2026-07-13T00:03:01.771909+00:00 - 2026-07-13T00:03:17.143399+00:00
+### 14. CorrelationId: `3cd2a2f5-d6a8-4428-9c8d-85885342a348`
+**Timestamp Window:** 2026-07-13T00:01:11.100184+00:00 - 2026-07-13T00:01:29.312733+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 15. CorrelationId: `2ad9b50e-c400-48ea-9313-e515ceb365d8`
-**Timestamp Window:** 2026-07-13T00:03:00.401084+00:00 - 2026-07-13T00:03:17.395227+00:00
+### 15. CorrelationId: `f4a4b4f1-3600-40cc-849f-0a2da940eea7`
+**Timestamp Window:** 2026-07-13T00:00:38.441634+00:00 - 2026-07-13T00:00:55.623644+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 16. CorrelationId: `0eae070e-29bf-4af1-97d5-272980e13959`
-**Timestamp Window:** 2026-07-13T00:02:59.135618+00:00 - 2026-07-13T00:03:15.459601+00:00
+### 16. CorrelationId: `01197503-0b5f-45af-a229-01915b3c669c`
+**Timestamp Window:** 2026-07-13T00:00:36.709627+00:00 - 2026-07-13T00:00:53.744786+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 17. CorrelationId: `bd9bf791-5506-483b-9a0d-f71f4d2bb0ad`
-**Timestamp Window:** 2026-07-13T00:02:58.145778+00:00 - 2026-07-13T00:03:14.543764+00:00
+### 17. CorrelationId: `e91b9b13-713a-40d0-be92-8b3aa25d8bab`
+**Timestamp Window:** 2026-07-13T00:00:34.889199+00:00 - 2026-07-13T00:00:54.352236+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 18. CorrelationId: `a6dc7ee1-3dbe-4aa5-bc57-da5377b2b1a5`
-**Timestamp Window:** 2026-07-13T00:02:56.963190+00:00 - 2026-07-13T00:03:13.569060+00:00
+### 18. CorrelationId: `110758cf-15e5-4736-8aed-c4b54c5fa487`
+**Timestamp Window:** 2026-07-13T00:00:32.564905+00:00 - 2026-07-13T00:00:50.802918+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 19. CorrelationId: `03790363-97b3-4135-a9d6-d56f63125203`
-**Timestamp Window:** 2026-07-13T00:02:55.666175+00:00 - 2026-07-13T00:03:12.122394+00:00
+### 19. CorrelationId: `842d642c-e489-450c-bc5c-5370d57d1c44`
+**Timestamp Window:** 2026-07-13T00:00:30.484848+00:00 - 2026-07-13T00:01:02.733934+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
 
-### 20. CorrelationId: `343e696f-c5d9-46ce-af83-f7b3f328a1a4`
-**Timestamp Window:** 2026-07-13T00:02:54.724482+00:00 - 2026-07-13T00:03:10.669315+00:00
+### 20. CorrelationId: `0b8882fb-0603-4d9f-9a5b-caced38a7142`
+**Timestamp Window:** 2026-07-13T00:00:21.340779+00:00 - 2026-07-13T00:00:39.727434+00:00
 **Diagnosis Category:** **[Critical Deployment/Migration Shift]**
 **Causal Explanation:** Unseen sequence path combined with massive latency, likely indicating a failed backend deployment involving `MICROSOFT.SQL/SERVERS/DATABASES/WRITE`.
 - **Scores:** Total: 4.0 | Struct: 1.0 | Rarity: 1.0 | Dur: 1.0 | Len: 1.0 | Ctx: 0.0
+
+## Track A: Context Inconsistency Boundaries (Top 20 by Context Score)
+These alerts specifically flag CorrelationIds that traversed distinct resource groups or subscriptions, a distinct anomaly axis evaluated independently of raw sequence structure.
+
+### 1. CorrelationId: `108f76dc-c2be-48df-b087-dcfb0ced87b4`
+**Timestamp Window:** 2026-07-11T22:05:58.123862+00:00 - 2026-07-12T00:49:18.939601+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.591 | Struct: 0.0 | Rarity: 0.995 | Dur: 1.0 | Len: 0.597 | Ctx: 1.0
+
+### 2. CorrelationId: `8b98e496-a0b6-4e65-aa90-5e49242b0b15`
+**Timestamp Window:** 2026-07-12T23:51:26.445442+00:00 - 2026-07-13T02:34:52.466622+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.591 | Struct: 0.0 | Rarity: 0.995 | Dur: 1.0 | Len: 0.597 | Ctx: 1.0
+
+### 3. CorrelationId: `1ce6ba9d-15d2-4d59-94f6-eee945505a81`
+**Timestamp Window:** 2026-07-12T04:52:51.213992+00:00 - 2026-07-12T06:30:39.737029+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.204 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.613 | Len: 0.597 | Ctx: 1.0
+
+### 4. CorrelationId: `1ba3a6f8-4d5a-464a-aa55-b19e34169cbc`
+**Timestamp Window:** 2026-07-13T05:10:48.648445+00:00 - 2026-07-13T07:15:59.779307+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.178 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.812 | Len: 0.371 | Ctx: 1.0
+
+### 5. CorrelationId: `6b0dbdd6-1843-48e0-af83-89368a3079b4`
+**Timestamp Window:** 2026-07-11T11:20:39.779847+00:00 - 2026-07-11T13:41:22.252923+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.112 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.925 | Len: 0.193 | Ctx: 1.0
+
+### 6. CorrelationId: `fe84a5e7-0094-45e8-a05d-ddcef3f332a2`
+**Timestamp Window:** 2026-07-12T19:14:36.265222+00:00 - 2026-07-12T21:34:26.223439+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.106 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.918 | Len: 0.193 | Ctx: 1.0
+
+### 7. CorrelationId: `684c0564-bd76-4a9e-a03e-fe26db8f7f1b`
+**Timestamp Window:** 2026-07-13T07:37:17.604552+00:00 - 2026-07-13T09:30:19.901108+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.089 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.724 | Len: 0.371 | Ctx: 1.0
+
+### 8. CorrelationId: `334242b7-5881-4e99-8a5f-55a4da9a0fe6`
+**Timestamp Window:** 2026-07-12T05:15:13.570035+00:00 - 2026-07-12T07:07:40.612874+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.085 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.72 | Len: 0.371 | Ctx: 1.0
+
+### 9. CorrelationId: `7ccbf2cc-4210-4ad7-ba94-244b2d35d2b9`
+**Timestamp Window:** 2026-07-12T14:15:25.859856+00:00 - 2026-07-12T15:35:39.493482+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.077 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.485 | Len: 0.597 | Ctx: 1.0
+
+### 10. CorrelationId: `1fd1afbf-3afb-46b6-8dd7-35381c72cc9b`
+**Timestamp Window:** 2026-07-11T08:46:38.004925+00:00 - 2026-07-11T10:06:42.644776+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.076 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.484 | Len: 0.597 | Ctx: 1.0
+
+### 11. CorrelationId: `e638947d-e5cd-4bc1-9f29-47ab057d0877`
+**Timestamp Window:** 2026-07-13T00:30:58.925322+00:00 - 2026-07-13T02:18:03.386017+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.046 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.68 | Len: 0.371 | Ctx: 1.0
+
+### 12. CorrelationId: `c53f1b5c-0609-45cf-a831-4134ed3bc80e`
+**Timestamp Window:** 2026-07-12T08:33:17.116605+00:00 - 2026-07-12T10:19:54.216914+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.043 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.677 | Len: 0.371 | Ctx: 1.0
+
+### 13. CorrelationId: `7d915d8d-e53d-4c37-959b-387ca91d785b`
+**Timestamp Window:** 2026-07-12T23:57:53.029564+00:00 - 2026-07-13T01:44:02.247955+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 3.039 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.674 | Len: 0.371 | Ctx: 1.0
+
+### 14. CorrelationId: `5baf03e9-30f0-4e76-b34e-fa977406128c`
+**Timestamp Window:** 2026-07-12T21:52:49.169471+00:00 - 2026-07-12T23:32:32.795699+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 2.993 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.627 | Len: 0.371 | Ctx: 1.0
+
+### 15. CorrelationId: `59c07005-79c7-42d0-a388-10eeb6a1e4fc`
+**Timestamp Window:** 2026-07-12T07:53:11.075943+00:00 - 2026-07-12T09:32:34.524299+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 2.99 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.625 | Len: 0.371 | Ctx: 1.0
+
+### 16. CorrelationId: `93dec89e-d819-46b0-ab43-137b00a3d3b1`
+**Timestamp Window:** 2026-07-12T07:40:09.431811+00:00 - 2026-07-12T09:18:04.764226+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 2.98 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.614 | Len: 0.371 | Ctx: 1.0
+
+### 17. CorrelationId: `cd75ed79-c971-4bf1-b47d-d77ea7485c32`
+**Timestamp Window:** 2026-07-11T11:28:37.846512+00:00 - 2026-07-11T13:06:22.472012+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 2.978 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.613 | Len: 0.371 | Ctx: 1.0
+
+### 18. CorrelationId: `f10e9487-ea85-439f-a703-096874bcdd56`
+**Timestamp Window:** 2026-07-13T02:42:21.668018+00:00 - 2026-07-13T04:19:02.194286+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 2.971 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.605 | Len: 0.371 | Ctx: 1.0
+
+### 19. CorrelationId: `2e5c53a8-d924-44e4-95eb-1b92caf7e96b`
+**Timestamp Window:** 2026-07-12T05:34:04.010047+00:00 - 2026-07-12T07:10:16.834224+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 2.967 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.602 | Len: 0.371 | Ctx: 1.0
+
+### 20. CorrelationId: `8c044381-dfd4-4ca0-a12f-669eb29548a4`
+**Timestamp Window:** 2026-07-12T21:12:43.413098+00:00 - 2026-07-12T22:48:37.490870+00:00
+**Diagnosis Category:** **[Lateral Boundary Crossing]**
+**Causal Explanation:** CorrelationId unexpectedly traversed distinct resource groups or providers during `MICROSOFT.NETWORK/VIRTUALNETWORKS/TAGGEDTRAFFICCONSUMERS/VALIDATE/ACTION`.
+- **Scores:** Total: 2.965 | Struct: 0.0 | Rarity: 0.995 | Dur: 0.599 | Len: 0.371 | Ctx: 1.0
 
 ## Track B: Caller 30m Session Drift
 These alerts indicate identity-centric behavioral drift, focusing on net-new access patterns or extreme volume spikes over a 30-minute window.

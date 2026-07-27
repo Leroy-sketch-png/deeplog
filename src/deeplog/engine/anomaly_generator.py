@@ -324,6 +324,20 @@ def train_and_score():
     # ---------------------------------------------------------
     logger.info("Finalizing Scores and Ranking Anomalies...")
     
+    import numpy as np
+    structs = [s["struct"] for s in track_a_scores.values()]
+    raritys = [s["rarity"] for s in track_a_scores.values()]
+    durs = [s["dur_dev"] for s in track_a_scores.values()]
+    lens = [s["len_dev"] for s in track_a_scores.values()]
+    ctxs = [s["context"] for s in track_a_scores.values()]
+    
+    logger.info("=== PERCENTILES ===")
+    logger.info(f"Struct: {np.percentile(structs, [50, 90, 99])}, Max: {max(structs)}")
+    logger.info(f"Rarity: {np.percentile(raritys, [50, 90, 99])}, Max: {max(raritys)}")
+    logger.info(f"Duration: {np.percentile(durs, [50, 90, 99])}, Max: {max(durs)}")
+    logger.info(f"Length: {np.percentile(lens, [50, 90, 99])}, Max: {max(lens)}")
+    logger.info(f"Context non-zero count: {sum(1 for c in ctxs if c > 0)}")
+    
     # Track A
     track_a_list = []
     for corr_id, s in track_a_scores.items():
@@ -349,7 +363,18 @@ def train_and_score():
         ])
         
     track_a_list.sort(key=lambda x: x[3], reverse=True)
-    top_100_a = track_a_list[:100]
+    top_total_a = track_a_list[:20]
+    
+    # Track A Context Inconsistency
+    track_a_list.sort(key=lambda x: (x[8], x[3]), reverse=True)
+    top_context_a = []
+    for x in track_a_list:
+        if x[8] > 0 and x not in top_total_a:
+            top_context_a.append(x)
+        if len(top_context_a) == 20:
+            break
+            
+    top_100_a = top_total_a + top_context_a
     
     # Track B
     track_b_list = []

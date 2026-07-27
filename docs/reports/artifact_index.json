@@ -1,0 +1,42 @@
+{
+  "project": "DeepLog Analytics Engine",
+  "status": "Frozen for Submission",
+  "artifacts": {
+    "engine": {
+      "path": "src/deeplog/engine/",
+      "description": "Core analytic engine containing the heuristic baseline (anomaly_generator.py), deterministic causality mapping (diagnostics.py), packet processing (diagnose_packet.py), and local feedback ingest (feedback.py)."
+    },
+    "reports": {
+      "project_handoff_summary": {
+        "path": "docs/reports/project_handoff_summary.md",
+        "description": "Executive handoff summarizing project milestones, conclusions regarding the LSTM vs baseline, and SOC integration prerequisites."
+      },
+      "operational_limitations": {
+        "path": "docs/reports/operational_limitations.md",
+        "description": "Documentation of current system constraints including zero-day bias, threshold saturation, and the lack of automated unlearning."
+      },
+      "signal_attribution": {
+        "path": "docs/reports/signal_attribution_report.md",
+        "description": "Empirical breakdown of which components drive Track A and Track B scores across the top dataset slices."
+      }
+    },
+    "outputs": {
+      "diagnosed_review_packet": {
+        "path": "docs/reports/diagnosed_review_packet.md",
+        "description": "The canonical output for the SOC analyst. Contains the dual-queue Track A and the session-based Track B anomalies, enriched with human-readable causal explanations."
+      },
+      "raw_track_a_csv": {
+        "path": "artifacts/explainable_anomalies/top_lifecycle_anomalies.csv",
+        "description": "Raw CSV containing the top 20 total-score and top 20 context-inconsistency CorrelationId anomalies."
+      },
+      "raw_track_b_csv": {
+        "path": "artifacts/explainable_anomalies/top_actor_anomalies.csv",
+        "description": "Raw CSV containing the top 20 caller session drift anomalies."
+      },
+      "feedback_database": {
+        "path": "data/feedback.sqlite",
+        "description": "Local SQLite database for SOC analysts to log CONFIRMED_ANOMALY or BENIGN_FALSE_POSITIVE labels against generated outputs."
+      }
+    }
+  }
+}

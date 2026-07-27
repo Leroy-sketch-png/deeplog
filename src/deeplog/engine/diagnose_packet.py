@@ -7,19 +7,20 @@ ARTIFACT_DIR = PROJECT_ROOT / "artifacts" / "explainable_anomalies"
 
 def generate_diagnosed_packet():
     with open(ARTIFACT_DIR / "top_lifecycle_anomalies.csv", "r", encoding="utf-8") as f:
-        # Sort explicitly by score descending, then timestamp_range descending (recency)
         track_a_rows = list(csv.DictReader(f))
-        track_a_rows.sort(key=lambda x: (float(x["total_score"]), x["timestamp_range"]), reverse=True)
-        track_a_top_20 = track_a_rows[:20]
+        track_a_top_20 = sorted(track_a_rows, key=lambda x: (float(x["total_score"]), x["timestamp_range"]), reverse=True)[:20]
+        
+        context_rows = [r for r in track_a_rows if float(r["context_inconsistency"]) > 0 and r not in track_a_top_20]
+        track_a_context_20 = sorted(context_rows, key=lambda x: (float(x["context_inconsistency"]), float(x["total_score"])), reverse=True)[:20]
         
     with open(ARTIFACT_DIR / "top_actor_anomalies.csv", "r", encoding="utf-8") as f:
         track_b_rows = list(csv.DictReader(f))[:20]
 
     md = []
     md.append("# Diagnosed Analyst Review Packet")
-    md.append("\nThis packet contains the top 20 most critical anomalies augmented by the **Diagnosis Layer**, which maps raw component scores into deterministic operational causal categories.")
+    md.append("\nThis packet contains the most critical anomalies augmented by the **Diagnosis Layer**, which maps raw component scores into deterministic operational causal categories.")
     
-    md.append("\n## Track A: CorrelationId Lifecycle Violations")
+    md.append("\n## Track A: CorrelationId Lifecycle Violations (Top 20 by Total Score)")
     md.append("These alerts indicate structural workflow violations or extreme timing deviations within a single backend operation lifecycle.")
     
     for i, row in enumerate(track_a_top_20, 1):
@@ -29,6 +30,17 @@ def generate_diagnosed_packet():
         md.append(f"**Diagnosis Category:** **[{category}]**")
         md.append(f"**Causal Explanation:** {cause}")
         md.append(f"- **Scores:** Total: {row['total_score']} | Struct: {row['structural_violation']} | Rarity: {row['sequence_rarity']} | Dur: {row['duration_deviation']} | Len: {row['length_deviation']} | Ctx: {row['context_inconsistency']}")
+        
+    if track_a_context_20:
+        md.append("\n## Track A: Context Inconsistency Boundaries (Top 20 by Context Score)")
+        md.append("These alerts specifically flag CorrelationIds that traversed distinct resource groups or subscriptions, a distinct anomaly axis evaluated independently of raw sequence structure.")
+        for i, row in enumerate(track_a_context_20, 1):
+            category, cause = diagnose_track_a(row)
+            md.append(f"\n### {i}. CorrelationId: `{row['correlation_id']}`")
+            md.append(f"**Timestamp Window:** {row['timestamp_range']}")
+            md.append(f"**Diagnosis Category:** **[{category}]**")
+            md.append(f"**Causal Explanation:** {cause}")
+            md.append(f"- **Scores:** Total: {row['total_score']} | Struct: {row['structural_violation']} | Rarity: {row['sequence_rarity']} | Dur: {row['duration_deviation']} | Len: {row['length_deviation']} | Ctx: {row['context_inconsistency']}")
         
     md.append("\n## Track B: Caller 30m Session Drift")
     md.append("These alerts indicate identity-centric behavioral drift, focusing on net-new access patterns or extreme volume spikes over a 30-minute window.")
