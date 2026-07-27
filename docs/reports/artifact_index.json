@@ -1,58 +1,56 @@
 {
   "project": "DeepLog Analytics Engine",
-  "status": "Frozen for Submission",
-  "artifacts": {
+  "version": "1.0.0",
+  "status": "Production-Ready",
+  "generated_from": "data/raw/logs_output_20260713_180521.csv",
+  "engine_schema": "azure_native (TimeGenerated, OperationNameValue, etc.)",
+  "pipeline_stats": {
+    "total_events": 1151167,
+    "train_events": 792262,
+    "test_events": 182210,
+    "track_a_correlations_scored": 81090,
+    "track_b_sessions_scored": 2009
+  },
+  "product": {
     "engine": {
       "path": "src/deeplog/engine/",
-      "description": "Core analytic engine containing the heuristic baseline (anomaly_generator.py), deterministic causality mapping (diagnostics.py), packet processing (diagnose_packet.py), and local feedback ingest (feedback.py)."
+      "description": "Core analytic engine: anomaly_generator.py (scoring), diagnostics.py (causal mapping), diagnose_packet.py (SOC packet), feedback.py (verdict persistence)."
     },
-    "reports": {
-      "project_handoff_summary": {
-        "path": "docs/reports/project_handoff_summary.md",
-        "description": "Executive handoff summarizing project milestones, conclusions regarding the LSTM vs baseline, and SOC integration prerequisites."
-      },
-      "operational_limitations": {
-        "path": "docs/reports/operational_limitations.md",
-        "description": "Documentation of current system constraints including zero-day bias, threshold saturation, and the lack of automated unlearning."
-      },
-      "paper_alignment_reconciliation": {
-        "path": "docs/reports/paper_alignment_reconciliation.md",
-        "description": "Apples-to-apples memo directly comparing the deterministic 5-gram baseline performance against the original DeepLog LSTM model on the repaired representation."
-      },
-      "paper_vs_project_scope": {
-        "path": "docs/reports/paper_vs_project_scope.md",
-        "description": "Reconciliation memo strictly contrasting what the academic papers proved vs. what our operational implementation proves."
-      },
-      "operational_usefulness_validation": {
-        "path": "docs/reports/operational_usefulness_validation.md",
-        "description": "Validation memo confirming the system's operational viability despite shifting away from deep learning."
-      },
-      "verdict_effectiveness_report": {
-        "path": "docs/reports/verdict_effectiveness_report.md",
-        "description": "Analytical report computing diagnosis bucket precision against the simulated ground-truth SOC verdicts."
-      }
+    "cli_commands": {
+      "analyze": "deeplog analyze --input <csv> --output-dir <dir> [--dry-run]",
+      "submit_feedback": "deeplog submit-feedback --track A|B --id <id> --decision <verdict> --reason <text>"
     },
-    "outputs": {
-      "diagnosed_review_packet": {
-        "path": "docs/reports/diagnosed_review_packet.md",
-        "description": "The canonical output for the SOC analyst. Contains the dual-queue Track A and the session-based Track B anomalies, enriched with human-readable causal explanations."
-      },
-      "verdict_effectiveness_json": {
-        "path": "docs/reports/verdict_effectiveness.json",
-        "description": "Structured JSON file of the diagnostic bucket precision metrics."
-      },
-      "raw_track_a_csv": {
-        "path": "artifacts/explainable_anomalies/top_lifecycle_anomalies.csv",
-        "description": "Raw CSV containing the top 20 total-score and top 20 context-inconsistency CorrelationId anomalies."
-      },
-      "raw_track_b_csv": {
-        "path": "artifacts/explainable_anomalies/top_actor_anomalies.csv",
-        "description": "Raw CSV containing the top 20 caller session drift anomalies."
-      },
-      "feedback_database": {
-        "path": "data/feedback.sqlite",
-        "description": "Local SQLite database for SOC analysts to log CONFIRMED_ANOMALY or BENIGN_FALSE_POSITIVE labels against generated outputs."
-      }
+    "tests": "tests/test_smoke.py"
+  },
+  "outputs": {
+    "diagnosed_review_packet": {
+      "path": "docs/reports/diagnosed_review_packet.md",
+      "description": "Canonical SOC analyst review packet: top Track A and Track B anomalies with causal explanations. Regenerate via: deeplog analyze ..."
+    },
+    "track_a_csv": {
+      "path": "artifacts/explainable_anomalies/top_lifecycle_anomalies.csv",
+      "description": "Raw scored Track A anomalies (CorrelationId lifecycle violations)."
+    },
+    "track_b_csv": {
+      "path": "artifacts/explainable_anomalies/top_actor_anomalies.csv",
+      "description": "Raw scored Track B anomalies (Caller session drift)."
+    },
+    "feedback_db": {
+      "path": "data/feedback.sqlite",
+      "description": "Empty initialized feedback database. Populated by SOC analysts via submit-feedback command."
+    }
+  },
+  "documentation": {
+    "product": {
+      "handoff_summary": "docs/reports/project_handoff_summary.md",
+      "operational_limitations": "docs/reports/operational_limitations.md"
+    },
+    "research": {
+      "paper_review": "docs/research/DeepLog_ByeBye_Findings_Report.md",
+      "paper_alignment": "docs/research/paper_alignment_reconciliation.md",
+      "paper_vs_project": "docs/research/paper_vs_project_scope.md",
+      "operational_usefulness": "docs/research/operational_usefulness_validation.md",
+      "verdict_effectiveness": "docs/research/verdict_effectiveness_report.md"
     }
   }
 }

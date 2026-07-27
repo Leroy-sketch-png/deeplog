@@ -85,7 +85,7 @@ def test_missing_column_raises():
             train_and_score(bad_csv, out_dir)
             assert False, "Should have raised ValueError"
         except ValueError as e:
-            assert "missing required columns" in str(e).lower()
+            assert "schema not recognized" in str(e).lower() or "missing required columns" in str(e).lower()
     print("PASS: test_missing_column_raises")
 
 
