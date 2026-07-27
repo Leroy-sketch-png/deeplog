@@ -2,6 +2,10 @@ import sys
 import argparse
 from pathlib import Path
 
+from deeplog.engine.anomaly_generator import train_and_score
+from deeplog.engine.diagnose_packet import generate_packet
+from deeplog.engine.feedback import submit_feedback, init_db
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -108,9 +112,6 @@ def main():
     # Dispatch
     # -------------------------------------------------------------------------
     if args.command == "analyze":
-        from deeplog.engine.anomaly_generator import train_and_score
-        from deeplog.engine.diagnose_packet import generate_packet
-
         input_path  = Path(args.input).resolve()
         output_dir  = Path(args.output_dir).resolve()
 
@@ -126,10 +127,7 @@ def main():
             print(f"\nSOC review packet written to: {packet_path}")
 
     elif args.command == "submit-feedback":
-        from deeplog.engine.feedback import submit_feedback, init_db
-        from pathlib import Path as _Path
-
-        db_path = _Path(args.db).resolve() if args.db else None
+        db_path = Path(args.db).resolve() if args.db else None
         submit_feedback(
             alert_id=args.alert_id,
             track=args.track,
