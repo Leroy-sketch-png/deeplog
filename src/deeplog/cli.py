@@ -89,6 +89,18 @@ def main():
         metavar="PATH",
         help="Path to the feedback SQLite database (default: ./data/feedback.sqlite).",
     )
+    fb.add_argument(
+        "--confidence",
+        default=None,
+        choices=["CERTAIN", "PROBABLE", "UNCERTAIN"],
+        help="Analyst confidence in the verdict.",
+    )
+    fb.add_argument(
+        "--fn-source",
+        default=None,
+        metavar="SOURCE",
+        help="External source identifier if this is an externally-discovered false negative.",
+    )
 
     args = parser.parse_args()
 
@@ -125,6 +137,8 @@ def main():
             reason=args.reason,
             analyst_id=args.analyst,
             db_path=db_path,
+            confidence=args.confidence,
+            fn_source=args.fn_source,
         )
 
     else:

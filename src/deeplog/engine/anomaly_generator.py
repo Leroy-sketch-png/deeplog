@@ -416,28 +416,53 @@ def _rank_and_write(track_a: Dict, track_a_state: Dict, track_b: Dict, output_di
     logger.info(f"Length:  {np.percentile(lens,    [50, 90, 99])}")
     logger.info(f"Context non-zero: {sum(1 for c in ctxs if c > 0)}")
 
-    a_rows = []
+    a_grouped = defaultdict(list)
     for corr, s in track_a.items():
         cs  = track_a_state[corr]
+        seq_context = " -> ".join(cs["ops"][-10:])
+        pattern_key = (cs["caller"], seq_context, s["struct"], s["context"])
+        a_grouped[pattern_key].append((corr, s, cs))
+
+    a_rows = []
+    for pattern_key, group in a_grouped.items():
+        # Pick the representative (first) correlation ID
+        corr, s, cs = group[0]
+        pattern_count = len(group)
+        
         tot = s["struct"] + s["rarity"] + s["dur_dev"] + s["len_dev"] + s["context"]
+        
+        eff_sig = 0
+        if s["struct"] == 1.0:
+            eff_sig += 1
+        if s["rarity"] > 0.8 and s["struct"] < 0.5:
+            eff_sig += 1
+        if s["dur_dev"] > 0.8 and s["struct"] < 0.5:
+            eff_sig += 1
+        if s["context"] > 0:
+            eff_sig += 1
+        if s["len_dev"] > 0.8:
+            eff_sig += 1
+
         parts = []
         if s["struct"]  > 0.5: parts.append("unseen sequence")
         if s["dur_dev"] > 0.5: parts.append("unusual timing")
         if s["context"] > 0.5: parts.append("cross-boundary context shift")
         expl = "CorrelationId exhibited " + " and ".join(parts) if parts else "Minor deviation."
+        
+        seq_context = " -> ".join(cs["ops"][:10])
         a_rows.append([
             f"{_ts(cs['start'])} — {_ts(cs['end'])}", cs["caller"], corr,
-            round(tot, 3), round(s["struct"], 3), round(s["rarity"], 3),
+            round(tot, 3), eff_sig, pattern_count, round(s["struct"], 3), round(s["rarity"], 3),
             round(s["dur_dev"], 3), round(s["len_dev"], 3), round(s["context"], 3),
-            expl, " -> ".join(cs["ops"][:10])
+            expl, seq_context
         ])
 
-    a_rows.sort(key=lambda x: x[3], reverse=True)
+    a_rows.sort(key=lambda x: (x[3], x[4]), reverse=True)
     top_total_a    = a_rows[:20]
-    ctx_ranked     = sorted(a_rows, key=lambda x: (x[8], x[3]), reverse=True)
-    top_context_a  = [x for x in ctx_ranked if x[8] > 0 and x not in top_total_a][:20]
+    ctx_ranked     = sorted(a_rows, key=lambda x: (x[10], x[3], x[4]), reverse=True)
+    top_context_a  = [x for x in ctx_ranked if x[10] > 0 and x not in top_total_a][:20]
 
-    a_headers = ["timestamp_range", "caller", "correlation_id", "total_score",
+    a_headers = ["timestamp_range", "caller", "correlation_id", "total_score", "effective_signal_count", "pattern_count",
                  "structural_violation", "sequence_rarity", "duration_deviation",
                  "length_deviation", "context_inconsistency", "explanation", "sequence_context"]
     _write_csv(output_dir / "top_lifecycle_anomalies.csv", a_headers, top_total_a + top_context_a)
@@ -447,6 +472,19 @@ def _rank_and_write(track_a: Dict, track_a_state: Dict, track_b: Dict, output_di
     for (caller, _), sb in track_b.items():
         tot = (sb["new_op"] + sb["new_prov"] + sb["new_sub"] + sb["new_rg"] +
                sb["new_type"] + sb["new_ip"] + sb["act_dev"] + sb["hr_dev"])
+        
+        eff_sig = 0
+        signals = {}
+        if sb["new_op"] > 0: eff_sig += 1; signals["New Operations"] = sb["new_op"]
+        if sb["new_ip"] > 0: eff_sig += 1; signals["New IP"] = sb["new_ip"]
+        if sb["act_dev"] > 0.8: eff_sig += 1; signals["Activity Spike"] = sb["act_dev"]
+        if sb["hr_dev"] > 0.8: eff_sig += 1; signals["Hour Deviation"] = sb["hr_dev"]
+        if sb["new_prov"] > 0 or sb["new_sub"] > 0 or sb["new_rg"] > 0 or sb["new_type"] > 0:
+            eff_sig += 1
+            signals["Context/Role Expansion"] = max(sb["new_prov"], sb["new_sub"], sb["new_rg"], sb["new_type"])
+
+        dominant_signal = max(signals.items(), key=lambda x: x[1])[0] if signals else "None"
+        
         parts = []
         if sb["new_op"]  > 0:   parts.append("new operations")
         if sb["new_ip"]  > 0:   parts.append("new IP")
@@ -455,15 +493,15 @@ def _rank_and_write(track_a: Dict, track_a_state: Dict, track_b: Dict, output_di
         expl = "Caller session: " + ", ".join(parts) if parts else "Minor deviation."
         b_rows.append([
             f"{_ts(sb['start'])} — {_ts(sb['end'])}", caller,
-            round(tot, 3), round(sb["new_op"], 3), round(sb["new_prov"], 3),
+            round(tot, 3), eff_sig, dominant_signal, round(sb["new_op"], 3), round(sb["new_prov"], 3),
             round(sb["new_sub"], 3), round(sb["new_rg"], 3), round(sb["new_type"], 3),
             round(sb["new_ip"], 3), round(sb["act_dev"], 3), round(sb["hr_dev"], 3),
             expl, ", ".join(list(sb["ops"])[:10])
         ])
-    b_rows.sort(key=lambda x: x[2], reverse=True)
+    b_rows.sort(key=lambda x: (x[2], x[3]), reverse=True)
 
-    b_headers = ["timestamp_range", "caller", "total_score", "new_op", "new_prov",
-                 "new_sub", "new_rg", "new_type", "new_ip", "activity_dev", "hour_dev",
+    b_headers = ["timestamp_range", "caller", "total_score", "effective_signal_count", "dominant_signal",
+                 "new_op", "new_prov", "new_sub", "new_rg", "new_type", "new_ip", "activity_dev", "hour_dev",
                  "explanation", "session_context"]
     _write_csv(output_dir / "top_actor_anomalies.csv", b_headers, b_rows[:100])
 
@@ -471,6 +509,7 @@ def _rank_and_write(track_a: Dict, track_a_state: Dict, track_b: Dict, output_di
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "track_a_scored": len(track_a),
         "track_b_scored": len(track_b),
+        "track_a_deduplicated_patterns": len(a_grouped)
     })
 
     logger.info(f"Artifacts written to {output_dir}")

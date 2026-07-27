@@ -55,13 +55,16 @@ def generate_packet(
         "Structural workflow violations or extreme timing deviations within a single backend operation lifecycle."
     )
     for i, row in enumerate(track_a_top_20, 1):
-        category, cause = diagnose_track_a(row)
+        category, cause, uncertainty = diagnose_track_a(row)
         md.append(f"\n### A1-{i}. `{row['correlation_id']}`")
         md.append(f"**Window:** {row['timestamp_range']}")
+        md.append(f"**Uncertainty:** {uncertainty}")
         md.append(f"**Category:** {category}")
         md.append(f"**Cause:** {cause}")
         md.append(
             f"**Scores:** Total `{row['total_score']}` | "
+            f"Eff. Signals `{row.get('effective_signal_count', '?')}` | "
+            f"Pattern Instances `{row.get('pattern_count', '?')}` | "
             f"Struct `{row['structural_violation']}` | Rarity `{row['sequence_rarity']}` | "
             f"Duration `{row['duration_deviation']}` | Length `{row['length_deviation']}` | "
             f"Context `{row['context_inconsistency']}`"
@@ -75,13 +78,16 @@ def generate_packet(
             "a distinct cross-boundary anomaly axis, evaluated independently of sequence structure."
         )
         for i, row in enumerate(track_a_context_20, 1):
-            category, cause = diagnose_track_a(row)
+            category, cause, uncertainty = diagnose_track_a(row)
             md.append(f"\n### A2-{i}. `{row['correlation_id']}`")
             md.append(f"**Window:** {row['timestamp_range']}")
+            md.append(f"**Uncertainty:** {uncertainty}")
             md.append(f"**Category:** {category}")
             md.append(f"**Cause:** {cause}")
             md.append(
                 f"**Scores:** Total `{row['total_score']}` | "
+                f"Eff. Signals `{row.get('effective_signal_count', '?')}` | "
+                f"Pattern Instances `{row.get('pattern_count', '?')}` | "
                 f"Struct `{row['structural_violation']}` | Rarity `{row['sequence_rarity']}` | "
                 f"Duration `{row['duration_deviation']}` | Length `{row['length_deviation']}` | "
                 f"Context `{row['context_inconsistency']}`"
@@ -93,13 +99,16 @@ def generate_packet(
         "Identity-centric behavioral drift: net-new access patterns or volume spikes over a 30-minute window."
     )
     for i, row in enumerate(track_b_rows, 1):
-        category, cause = diagnose_track_b(row)
+        category, cause, uncertainty = diagnose_track_b(row)
         md.append(f"\n### B-{i}. `{row['caller']}`")
         md.append(f"**Window:** {row['timestamp_range']}")
+        md.append(f"**Uncertainty:** {uncertainty}")
         md.append(f"**Category:** {category}")
         md.append(f"**Cause:** {cause}")
         md.append(
             f"**Scores:** Total `{row['total_score']}` | "
+            f"Eff. Signals `{row.get('effective_signal_count', '?')}` | "
+            f"Dominant Signal `{row.get('dominant_signal', '?')}` | "
             f"New Ops `{row['new_op']}` | New IP `{row['new_ip']}` | "
             f"New RG `{row['new_rg']}` | Act Spike `{row['activity_dev']}` | "
             f"Hour Dev `{row['hour_dev']}`"
