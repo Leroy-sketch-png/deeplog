@@ -15,15 +15,31 @@
         "path": "docs/reports/operational_limitations.md",
         "description": "Documentation of current system constraints including zero-day bias, threshold saturation, and the lack of automated unlearning."
       },
-      "signal_attribution": {
-        "path": "docs/reports/signal_attribution_report.md",
-        "description": "Empirical breakdown of which components drive Track A and Track B scores across the top dataset slices."
+      "paper_alignment_reconciliation": {
+        "path": "docs/reports/paper_alignment_reconciliation.md",
+        "description": "Apples-to-apples memo directly comparing the deterministic 5-gram baseline performance against the original DeepLog LSTM model on the repaired representation."
+      },
+      "paper_vs_project_scope": {
+        "path": "docs/reports/paper_vs_project_scope.md",
+        "description": "Reconciliation memo strictly contrasting what the academic papers proved vs. what our operational implementation proves."
+      },
+      "operational_usefulness_validation": {
+        "path": "docs/reports/operational_usefulness_validation.md",
+        "description": "Validation memo confirming the system's operational viability despite shifting away from deep learning."
+      },
+      "verdict_effectiveness_report": {
+        "path": "docs/reports/verdict_effectiveness_report.md",
+        "description": "Analytical report computing diagnosis bucket precision against the simulated ground-truth SOC verdicts."
       }
     },
     "outputs": {
       "diagnosed_review_packet": {
         "path": "docs/reports/diagnosed_review_packet.md",
         "description": "The canonical output for the SOC analyst. Contains the dual-queue Track A and the session-based Track B anomalies, enriched with human-readable causal explanations."
+      },
+      "verdict_effectiveness_json": {
+        "path": "docs/reports/verdict_effectiveness.json",
+        "description": "Structured JSON file of the diagnostic bucket precision metrics."
       },
       "raw_track_a_csv": {
         "path": "artifacts/explainable_anomalies/top_lifecycle_anomalies.csv",
