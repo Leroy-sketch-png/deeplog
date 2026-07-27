@@ -1,5 +1,6 @@
 import csv
 from pathlib import Path
+
 from deeplog.engine.diagnostics import diagnose_track_a, diagnose_track_b
 
 

@@ -1,5 +1,5 @@
-import sqlite3
 import datetime
+import sqlite3
 from pathlib import Path
 
 _DEFAULT_DB = (

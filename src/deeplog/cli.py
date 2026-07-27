@@ -1,10 +1,10 @@
-import sys
 import argparse
+import sys
 from pathlib import Path
 
 from deeplog.engine.anomaly_generator import train_and_score
 from deeplog.engine.diagnose_packet import generate_packet
-from deeplog.engine.feedback import submit_feedback, init_db
+from deeplog.engine.feedback import init_db, submit_feedback
 
 
 def main():
