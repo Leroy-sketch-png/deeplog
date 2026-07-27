@@ -30,7 +30,8 @@ def generate_packet(
     )[:20]
 
     context_rows = [
-        r for r in track_a_rows
+        r
+        for r in track_a_rows
         if float(r["context_inconsistency"]) > 0 and r not in track_a_top_20
     ]
     track_a_context_20 = sorted(

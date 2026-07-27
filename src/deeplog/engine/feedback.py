@@ -2,7 +2,9 @@ import sqlite3
 import datetime
 from pathlib import Path
 
-_DEFAULT_DB = Path(__file__).resolve().parent.parent.parent.parent / "data" / "feedback.sqlite"
+_DEFAULT_DB = (
+    Path(__file__).resolve().parent.parent.parent.parent / "data" / "feedback.sqlite"
+)
 
 
 def _get_db(db_path: Path = None) -> Path:
@@ -13,7 +15,8 @@ def init_db(db_path: Path = None) -> None:
     path = _get_db(db_path)
     path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(str(path))
-    conn.execute("""
+    conn.execute(
+        """
         CREATE TABLE IF NOT EXISTS feedback (
             id                INTEGER PRIMARY KEY AUTOINCREMENT,
             timestamp         TEXT    NOT NULL,
@@ -29,7 +32,8 @@ def init_db(db_path: Path = None) -> None:
             reviewed_at       TEXT    NOT NULL,
             disagreement_flag INTEGER DEFAULT 0
         )
-    """)
+    """
+    )
     conn.commit()
     conn.close()
 
@@ -60,14 +64,18 @@ def submit_feedback(
     """
     valid_decisions = {"BENIGN_FALSE_POSITIVE", "CONFIRMED_ANOMALY", "UNREVIEWED"}
     if decision not in valid_decisions:
-        raise ValueError(f"Invalid decision '{decision}'. Must be one of {valid_decisions}")
+        raise ValueError(
+            f"Invalid decision '{decision}'. Must be one of {valid_decisions}"
+        )
 
     valid_tracks = {"A", "B"}
     if track not in valid_tracks:
         raise ValueError(f"Invalid track '{track}'. Must be 'A' or 'B'")
 
     if confidence and confidence not in {"CERTAIN", "PROBABLE", "UNCERTAIN"}:
-        raise ValueError(f"Invalid confidence '{confidence}'. Must be CERTAIN, PROBABLE, or UNCERTAIN")
+        raise ValueError(
+            f"Invalid confidence '{confidence}'. Must be CERTAIN, PROBABLE, or UNCERTAIN"
+        )
 
     path = _get_db(db_path)
     init_db(path)
@@ -77,9 +85,24 @@ def submit_feedback(
     conn.execute(
         "INSERT INTO feedback (timestamp, alert_id, track, decision, reason, analyst_id, reviewer_count, reviewer_ids, confidence, fn_source, reviewed_at, disagreement_flag) "
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        (ts, alert_id, track, decision, reason, analyst_id, 1, analyst_id, confidence, fn_source, ts, 0),
+        (
+            ts,
+            alert_id,
+            track,
+            decision,
+            reason,
+            analyst_id,
+            1,
+            analyst_id,
+            confidence,
+            fn_source,
+            ts,
+            0,
+        ),
     )
     conn.commit()
     conn.close()
 
-    print(f"Feedback logged — Alert: '{alert_id}' [Track {track}]: {decision} (Confidence: {confidence})")
+    print(
+        f"Feedback logged — Alert: '{alert_id}' [Track {track}]: {decision} (Confidence: {confidence})"
+    )

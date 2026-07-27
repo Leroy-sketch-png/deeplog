@@ -28,7 +28,8 @@ def main():
         help="Detect anomalies in a log CSV and write SOC review packets.",
     )
     ana.add_argument(
-        "--input", "-i",
+        "--input",
+        "-i",
         required=True,
         metavar="PATH",
         help=(
@@ -38,7 +39,8 @@ def main():
         ),
     )
     ana.add_argument(
-        "--output-dir", "-o",
+        "--output-dir",
+        "-o",
         default="./reports",
         metavar="DIR",
         help="Directory to write output artifacts (default: ./reports).",
@@ -57,7 +59,8 @@ def main():
         help="Log an analyst verdict against a detected alert.",
     )
     fb.add_argument(
-        "--track", "-t",
+        "--track",
+        "-t",
         required=True,
         choices=["A", "B"],
         help="Anomaly track. A = CorrelationId lifecycle, B = Caller session.",
@@ -70,13 +73,15 @@ def main():
         help="The CorrelationId (Track A) or Caller identifier (Track B).",
     )
     fb.add_argument(
-        "--decision", "-d",
+        "--decision",
+        "-d",
         required=True,
         choices=["BENIGN_FALSE_POSITIVE", "CONFIRMED_ANOMALY", "UNREVIEWED"],
         help="Ground-truth analyst verdict.",
     )
     fb.add_argument(
-        "--reason", "-r",
+        "--reason",
+        "-r",
         required=True,
         metavar="TEXT",
         help="One-sentence reason for the verdict.",
@@ -112,8 +117,8 @@ def main():
     # Dispatch
     # -------------------------------------------------------------------------
     if args.command == "analyze":
-        input_path  = Path(args.input).resolve()
-        output_dir  = Path(args.output_dir).resolve()
+        input_path = Path(args.input).resolve()
+        output_dir = Path(args.output_dir).resolve()
 
         train_and_score(input_path, output_dir, dry_run=args.dry_run)
 
