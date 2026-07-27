@@ -2,60 +2,108 @@ import csv
 from pathlib import Path
 from deeplog.engine.diagnostics import diagnose_track_a, diagnose_track_b
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-ARTIFACT_DIR = PROJECT_ROOT / "artifacts" / "explainable_anomalies"
 
-def generate_diagnosed_packet():
-    with open(ARTIFACT_DIR / "top_lifecycle_anomalies.csv", "r", encoding="utf-8") as f:
+def generate_packet(
+    track_a_csv: Path,
+    track_b_csv: Path,
+    output_path: Path,
+) -> None:
+    """
+    Generate a human-readable diagnosed SOC review packet.
+
+    Parameters
+    ----------
+    track_a_csv : Path
+        Path to the top_lifecycle_anomalies.csv produced by anomaly_generator.
+    track_b_csv : Path
+        Path to the top_actor_anomalies.csv produced by anomaly_generator.
+    output_path : Path
+        Destination path for the markdown packet.
+    """
+    with open(track_a_csv, "r", encoding="utf-8") as f:
         track_a_rows = list(csv.DictReader(f))
-        track_a_top_20 = sorted(track_a_rows, key=lambda x: (float(x["total_score"]), x["timestamp_range"]), reverse=True)[:20]
-        
-        context_rows = [r for r in track_a_rows if float(r["context_inconsistency"]) > 0 and r not in track_a_top_20]
-        track_a_context_20 = sorted(context_rows, key=lambda x: (float(x["context_inconsistency"]), float(x["total_score"])), reverse=True)[:20]
-        
-    with open(ARTIFACT_DIR / "top_actor_anomalies.csv", "r", encoding="utf-8") as f:
+
+    track_a_top_20 = sorted(
+        track_a_rows,
+        key=lambda x: (float(x["total_score"]), x["timestamp_range"]),
+        reverse=True,
+    )[:20]
+
+    context_rows = [
+        r for r in track_a_rows
+        if float(r["context_inconsistency"]) > 0 and r not in track_a_top_20
+    ]
+    track_a_context_20 = sorted(
+        context_rows,
+        key=lambda x: (float(x["context_inconsistency"]), float(x["total_score"])),
+        reverse=True,
+    )[:20]
+
+    with open(track_b_csv, "r", encoding="utf-8") as f:
         track_b_rows = list(csv.DictReader(f))[:20]
 
     md = []
     md.append("# Diagnosed Analyst Review Packet")
-    md.append("\nThis packet contains the most critical anomalies augmented by the **Diagnosis Layer**, which maps raw component scores into deterministic operational causal categories.")
-    
-    md.append("\n## Track A: CorrelationId Lifecycle Violations (Top 20 by Total Score)")
-    md.append("These alerts indicate structural workflow violations or extreme timing deviations within a single backend operation lifecycle.")
-    
+    md.append(
+        "\nThis packet maps raw anomaly scores into deterministic operational causal categories "
+        "for SOC triage. Two independent review queues are provided for Track A."
+    )
+
+    md.append("\n---\n")
+    md.append("## Track A — Queue 1: Top 20 by Total Score")
+    md.append(
+        "Structural workflow violations or extreme timing deviations within a single backend operation lifecycle."
+    )
     for i, row in enumerate(track_a_top_20, 1):
         category, cause = diagnose_track_a(row)
-        md.append(f"\n### {i}. CorrelationId: `{row['correlation_id']}`")
-        md.append(f"**Timestamp Window:** {row['timestamp_range']}")
-        md.append(f"**Diagnosis Category:** **[{category}]**")
-        md.append(f"**Causal Explanation:** {cause}")
-        md.append(f"- **Scores:** Total: {row['total_score']} | Struct: {row['structural_violation']} | Rarity: {row['sequence_rarity']} | Dur: {row['duration_deviation']} | Len: {row['length_deviation']} | Ctx: {row['context_inconsistency']}")
-        
+        md.append(f"\n### A1-{i}. `{row['correlation_id']}`")
+        md.append(f"**Window:** {row['timestamp_range']}")
+        md.append(f"**Category:** {category}")
+        md.append(f"**Cause:** {cause}")
+        md.append(
+            f"**Scores:** Total `{row['total_score']}` | "
+            f"Struct `{row['structural_violation']}` | Rarity `{row['sequence_rarity']}` | "
+            f"Duration `{row['duration_deviation']}` | Length `{row['length_deviation']}` | "
+            f"Context `{row['context_inconsistency']}`"
+        )
+
     if track_a_context_20:
-        md.append("\n## Track A: Context Inconsistency Boundaries (Top 20 by Context Score)")
-        md.append("These alerts specifically flag CorrelationIds that traversed distinct resource groups or subscriptions, a distinct anomaly axis evaluated independently of raw sequence structure.")
+        md.append("\n---\n")
+        md.append("## Track A — Queue 2: Top 20 by Context Inconsistency")
+        md.append(
+            "CorrelationIds that traversed distinct resource groups or subscriptions — "
+            "a distinct cross-boundary anomaly axis, evaluated independently of sequence structure."
+        )
         for i, row in enumerate(track_a_context_20, 1):
             category, cause = diagnose_track_a(row)
-            md.append(f"\n### {i}. CorrelationId: `{row['correlation_id']}`")
-            md.append(f"**Timestamp Window:** {row['timestamp_range']}")
-            md.append(f"**Diagnosis Category:** **[{category}]**")
-            md.append(f"**Causal Explanation:** {cause}")
-            md.append(f"- **Scores:** Total: {row['total_score']} | Struct: {row['structural_violation']} | Rarity: {row['sequence_rarity']} | Dur: {row['duration_deviation']} | Len: {row['length_deviation']} | Ctx: {row['context_inconsistency']}")
-        
-    md.append("\n## Track B: Caller 30m Session Drift")
-    md.append("These alerts indicate identity-centric behavioral drift, focusing on net-new access patterns or extreme volume spikes over a 30-minute window.")
+            md.append(f"\n### A2-{i}. `{row['correlation_id']}`")
+            md.append(f"**Window:** {row['timestamp_range']}")
+            md.append(f"**Category:** {category}")
+            md.append(f"**Cause:** {cause}")
+            md.append(
+                f"**Scores:** Total `{row['total_score']}` | "
+                f"Struct `{row['structural_violation']}` | Rarity `{row['sequence_rarity']}` | "
+                f"Duration `{row['duration_deviation']}` | Length `{row['length_deviation']}` | "
+                f"Context `{row['context_inconsistency']}`"
+            )
+
+    md.append("\n---\n")
+    md.append("## Track B — Caller 30-Minute Session Drift")
+    md.append(
+        "Identity-centric behavioral drift: net-new access patterns or volume spikes over a 30-minute window."
+    )
     for i, row in enumerate(track_b_rows, 1):
         category, cause = diagnose_track_b(row)
-        md.append(f"\n### {i}. Caller: `{row['caller']}`")
-        md.append(f"**Session Window:** {row['timestamp_range']}")
-        md.append(f"**Diagnosis Category:** **[{category}]**")
-        md.append(f"**Causal Explanation:** {cause}")
-        md.append(f"- **Scores:** Total: {row['total_score']} | New Ops: {row['new_op']} | IPs: {row['new_ip']} | RGs: {row['new_rg']} | ActSpike: {row['activity_dev']} | HrDev: {row['hour_dev']}")
-        
-    with open(PROJECT_ROOT / "docs" / "reports" / "diagnosed_review_packet.md", "w", encoding="utf-8") as f:
-        f.write("\n".join(md))
-        
-    print("Successfully generated diagnosed_review_packet.md")
+        md.append(f"\n### B-{i}. `{row['caller']}`")
+        md.append(f"**Window:** {row['timestamp_range']}")
+        md.append(f"**Category:** {category}")
+        md.append(f"**Cause:** {cause}")
+        md.append(
+            f"**Scores:** Total `{row['total_score']}` | "
+            f"New Ops `{row['new_op']}` | New IP `{row['new_ip']}` | "
+            f"New RG `{row['new_rg']}` | Act Spike `{row['activity_dev']}` | "
+            f"Hour Dev `{row['hour_dev']}`"
+        )
 
-if __name__ == "__main__":
-    generate_diagnosed_packet()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(md), encoding="utf-8")
